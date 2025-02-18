@@ -26,7 +26,6 @@ class Question extends Model
         self::UPDATED_AT => 'datetime'
     ];
 
-
     public function topic(): BelongsTo
     {
         return $this->belongsTo(Topic::class);

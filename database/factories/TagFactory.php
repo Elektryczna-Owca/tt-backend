@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Topic;
+use App\Models\Tag;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Topic>
+ * @extends Factory<Tag>
  */
-class TopicFactory extends Factory
+class TagFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,8 +18,7 @@ class TopicFactory extends Factory
     public function definition(): array
     {
         return [
-            Topic::NAME => fake()->sentence(),
-            Topic::DESCRIPTION => fake()->sentence(10)
+            Tag::NAME => fake()->unique()->word()
         ];
     }
 }
