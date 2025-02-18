@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use Database\Factories\TopicFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * @property-read  $tags
- * @property-read  $questions
+ * @property-read  Collection<Question> $questions
  */
 class Topic extends Model
 {
@@ -25,4 +27,10 @@ class Topic extends Model
         self::CREATED_AT => 'datetime',
         self::UPDATED_AT => 'datetime'
     ];
+
+
+    public function questions(): BelongsToMany
+    {
+        return $this->belongsToMany(Question::class);
+    }
 }
