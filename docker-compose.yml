@@ -1,0 +1,60 @@
+services:
+  app:
+    build:
+      args:
+        user: wujek
+        uid: 1000
+      context: ./
+      dockerfile: docker/Dockerfile
+    image: tt-machine
+    container_name: tt-api
+    restart: unless-stopped
+    working_dir: /var/www/
+    environment:
+      HISTFILE: /var/www/docker/zsh/.zsh_history
+    volumes:
+      - ./:/var/www
+      - ./docker/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini
+      - ./docker/zsh/.zshrc:/home/wujek/.zshrc
+    networks:
+      - machine-network
+
+  redis:
+    image: redis
+    container_name: redis-tt-api
+    restart: unless-stopped
+    ports:
+      - "${DOCKER_EXTERNAL_REDIS_PORT:-6379}:6379"
+    networks:
+      - machine-network
+
+  pgsql:
+    image: postgis/postgis:16-3.5
+    container_name: psql-tt-api
+    restart: unless-stopped
+    ports:
+      - "${DOCKER_EXTERNAL_POSTGRES_PORT:-5432}:5432"
+    environment:
+      POSTGRES_DB: table_topics
+      POSTGRES_PASSWORD: table_topics_pass
+      POSTGRES_USER: table_topics_user
+    networks:
+      - machine-network
+
+  nginx:
+    image: nginx:1.17-alpine
+    container_name: nginx-tt-api
+    restart: unless-stopped
+    ports:
+      - "${DOCKER_EXTERNAL_NGINX_PORT:-80}:80"
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx:/etc/nginx/conf.d
+    networks:
+      - machine-network
+    links:
+      - app
+
+networks:
+  machine-network:
+    driver: bridge
