@@ -2,17 +2,23 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Topic;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use OpenApi\Attributes as OA;
 
+#[OA\Schema(
+    title: 'StoreTopicRequest',
+    description: 'StoreTopicRequest'
+)]
 class StoreTopicRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+    #[OA\Property(property: 'name', type: 'string')]
+    #[OA\Property(property: 'description', type: 'string')]
+
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +29,8 @@ class StoreTopicRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            Topic::NAME => ['required', 'string', 'max:255'],
+            Topic::DESCRIPTION => ['required', 'string', 'max:255'],
         ];
     }
 }
