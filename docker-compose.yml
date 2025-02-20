@@ -28,16 +28,17 @@ services:
     networks:
       - machine-network
 
-  pgsql:
-    image: postgis/postgis:16-3.5
-    container_name: psql-tt-api
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-tt-api
     restart: unless-stopped
     ports:
-      - "${DOCKER_EXTERNAL_POSTGRES_PORT:-5432}:5432"
+      - "${DOCKER_EXTERNAL_MYSQL_PORT:-3306}:3306"
     environment:
-      POSTGRES_DB: table_topics
-      POSTGRES_PASSWORD: table_topics_pass
-      POSTGRES_USER: table_topics_user
+      MYSQL_DATABASE: table_topics
+      MYSQL_ROOT_PASSWORD: table_topics_pass
+      MYSQL_USER: table_topics_user
+      MYSQL_PASSWORD: table_topics_pass
     networks:
       - machine-network
 
