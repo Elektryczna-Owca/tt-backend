@@ -22,3 +22,4 @@ yarn-error.log
 /.vscode
 /.zed
 /docker/zsh/.zsh_history
+/storage/api-docs/api-docs.json
