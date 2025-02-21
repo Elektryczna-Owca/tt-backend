@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property-read  Collection<Tag> $tags
- * @property-read  Collection<Question> $questions
+ * @property-read  Collection<Tag> $questions
  */
 class Topic extends Model
 {
@@ -30,13 +30,13 @@ class Topic extends Model
     ];
 
 
-    public function questions(): BelongsToMany
+    public function questions(): HasMany
     {
-        return $this->belongsToMany(Question::class);
+        return $this->hasMany(Question::class);
     }
 
-    public function tags(): HasMany
+    public function tags(): BelongsToMany
     {
-        return $this->hasMany(Tag::class);
+        return $this->belongsToMany(Tag::class);
     }
 }

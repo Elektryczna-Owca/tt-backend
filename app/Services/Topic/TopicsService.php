@@ -3,6 +3,7 @@
 namespace App\Services\Topic;
 
 use App\Models\Topic;
+use Illuminate\Database\Eloquent\Collection;
 
 class TopicsService
 {
@@ -16,5 +17,19 @@ class TopicsService
         $topic->save();
 
         return $topic->fresh();
+    }
+
+    /**
+     * @return Collection<Topic>
+     */
+    public function getAll(): Collection
+    {
+        return Topic::query()
+            ->get();
+    }
+
+    public function loadRelations(Topic $topic, array $relations = ['tags', 'questions']): Topic
+    {
+        return $topic->loadMissing($relations);
     }
 }

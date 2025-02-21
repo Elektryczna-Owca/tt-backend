@@ -6,10 +6,9 @@ use Database\Factories\TagFactory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @property-read Collection<Question> $questions
+ * @property-read Collection<Tag> $questions
  */
 class Tag extends Model
 {
@@ -21,8 +20,4 @@ class Tag extends Model
     public const string CREATED_AT =  'created_at';
     public const string UPDATED_AT =  'updated_at';
 
-    public function questions(): HasMany
-    {
-        return $this->hasMany(Question::class);
-    }
 }

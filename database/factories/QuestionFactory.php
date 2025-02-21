@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\Question;
+use App\Models\Tag;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Question>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Tag>
  */
 class QuestionFactory extends Factory
 {
@@ -18,7 +18,7 @@ class QuestionFactory extends Factory
     public function definition(): array
     {
         return [
-            Question::TEXT => fake()->sentence(),
+            Tag::TEXT => fake()->sentence(),
         ];
     }
 }

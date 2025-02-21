@@ -15,6 +15,8 @@ class TopicResource extends JsonResource
     #[OA\Property(property: 'id', type: 'integer')]
     #[OA\Property(property: 'name', type: 'string')]
     #[OA\Property(property: 'description', type: 'string')]
+    #[OA\Property(property: 'questions', type: 'array', items: new OA\Items(ref: '#/components/schemas/QuestionResource',))]
+    #[OA\Property(property: 'Tags', type: 'array', items: new OA\Items(ref: '#/components/schemas/TagResource',))]
     #[OA\Property(property: 'created_at', type: 'string')]
     #[OA\Property(property: 'updated_at', type: 'string')]
     public function toArray($request): array
@@ -26,6 +28,8 @@ class TopicResource extends JsonResource
             'id' => $topic->getAttribute(Topic::ID),
             'name' => $topic->getAttribute(Topic::NAME),
             'description' => $topic->getAttribute(Topic::DESCRIPTION),
+            'questions' => $topic->relationLoaded('questions') ? QuestionResource::collection($topic->getAttribute('questions')) : null,
+            'tags' => $topic->relationLoaded('tags') ? TagResource::collection($topic->getAttribute('tags')) : null,
             'created_at' => $topic->getAttribute(Topic::CREATED_AT), //todo datetime formatter
             'updated_at' => $topic->getAttribute(Topic::UPDATED_AT),
         ];

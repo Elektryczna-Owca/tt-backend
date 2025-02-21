@@ -8,19 +8,17 @@ use App\Http\Resources\InfoResource;
 use App\Http\Resources\Topic\TopicResource;
 use App\Services\Topic\StoreTopicDTO;
 use App\Services\Topic\TopicsService;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Symfony\Component\HttpFoundation\Response;
 use OpenApi\Attributes as OA;
 
-#[OA\Post(
+#[OA\Get(
     path: '/topics',
     security: [['passport' => ['*']]],
-    requestBody: new OA\RequestBody(
-        content: new OA\JsonContent(ref: '#/components/schemas/StoreTopicRequest'),
-    ),
     tags: ['Topic'],
     responses: [
         new OA\Response(
-            response: Response::HTTP_CREATED,
+            response: Response::HTTP_OK,
             description: 'OK',
             content: new OA\JsonContent(
                 ref: '#/components/schemas/TopicResource',
@@ -30,24 +28,18 @@ use OpenApi\Attributes as OA;
             response: Response::HTTP_UNAUTHORIZED,
             description: 'Unauthorized',
         ),
-        new OA\Response(
-            response: Response::HTTP_UNPROCESSABLE_ENTITY,
-            description: 'Validation Failed',
-        ),
     ]
 )]
-class StoreTopicController extends Controller //todo Tests and authorization
+class GetTopicsController extends Controller //todo Tests
 {
     public function __construct(private readonly TopicsService $topicsService)
     {
     }
 
-    public function __invoke(StoreTopicRequest $request): InfoResource
+    public function __invoke(): AnonymousResourceCollection
     {
-        $topic = $this->topicsService->storeTopic(new StoreTopicDTO(...$request->validated()));
+        $topics = $this->topicsService->getAll(); //todo Pagination and filters
 
-        return new InfoResource(TopicResource::make($topic))
-            ->setMessage(__('messages.create.success', ['model' => __('models.topic')]))
-            ->setStatusCode(Response::HTTP_OK);
+        return TopicResource::collection($topics);
     }
 }
