@@ -15,10 +15,9 @@ class StoreTopicRequest extends FormRequest
 {
     #[OA\Property(property: 'name', type: 'string')]
     #[OA\Property(property: 'description', type: 'string')]
-
     public function authorize(): bool
     {
-        return true;
+        return config('app.env') === 'local';
     }
 
     /**
